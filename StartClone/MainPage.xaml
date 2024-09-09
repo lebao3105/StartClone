@@ -13,11 +13,9 @@
 
         <CollectionViewSource
             x:Name="groupedItemsViewSource"
-            Source="{Binding Groups}"
             IsSourceGrouped="True"
             ItemsPath="tiles"
-            d:Source="{Binding Groups, Source={d:DesignData Source=tiles, Type=local:TilesSource}}"
-            />
+            Source="{Binding}"/>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -63,9 +61,8 @@
                         <DataTemplate>
                             <Grid Margin="0,0,0,2">
                                 <Button Foreground="{ThemeResource ApplicationHeaderForegroundThemeBrush}"
-                                    AutomationProperties.Name="Group Title"
                                     Click="Header_Click"
-                                    Style="{StaticResource TextBlockButtonStyle}" >
+                                    Style="{StaticResource TextBlockButtonStyle}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding name}" Margin="0,-11,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
                                         <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-11,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
@@ -95,4 +92,21 @@
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
     </Grid>
+    <Page.BottomAppBar>
+        <AppBar>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <AppBarButton Label="All apps"/>
+                    <AppBarButton Label="Exit select mode"/>
+                    <AppBarButton Label="Unpin selected items"/>
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </Page.BottomAppBar>
 </Page>

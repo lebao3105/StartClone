@@ -1,5 +1,7 @@
-﻿using System;
+﻿using StartClone.Common;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -23,17 +25,41 @@ namespace StartClone
     public sealed partial class MainPage : Page
     {
         private TilesSource tiles = new TilesSource();
+        private NavigationHelper navigationHelper;
+
+        public ObservableCollection<TilesGroup> DefaultViewModel
+        {
+            get { return tiles.Groups; }
+        }
+
+        /// <summary>
+        /// NavigationHelper is used on each page to aid in navigation and 
+        /// process lifetime management
+        /// </summary>
+        public NavigationHelper NavigationHelper
+        {
+            get { return this.navigationHelper; }
+        }
 
         public MainPage()
         {
             tiles.addDefaultTiles();
             this.InitializeComponent();
-            //appsGrid.ItemsSource = tiles.Groups;
+            this.navigationHelper = new NavigationHelper(this);
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            ////
+            var itemCommand = ((Tile)e.ClickedItem).command;
+            switch (itemCommand)
+            {
+                case "start[hide]":
+                    this.Opacity = 0.0;
+                    break;
+
+                case "":
+                    break;
+            }
         }
 
         /// <summary>
@@ -44,11 +70,34 @@ namespace StartClone
         void Header_Click(object sender, RoutedEventArgs e)
         {
             // Determine what group the Button instance represents
-            //var group = (sender as FrameworkElement).DataContext;
+            var group = (sender as FrameworkElement).DataContext;
 
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
-            //this.Frame.Navigate(typeof(GroupDetailPage), ((SampleDataGroup)group).UniqueId);
+            this.Frame.Navigate(typeof(GroupDetails), (group as TilesGroup));
         }
+
+        #region NavigationHelper registration
+
+        /// The methods provided in this section are simply used to allow
+        /// NavigationHelper to respond to the page's navigation methods.
+        /// 
+        /// Page specific logic should be placed in event handlers for the  
+        /// <see cref="Common.NavigationHelper.LoadState"/>
+        /// and <see cref="Common.NavigationHelper.SaveState"/>.
+        /// The navigation parameter is available in the LoadState method 
+        /// in addition to page state preserved during an earlier session.
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            navigationHelper.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            navigationHelper.OnNavigatedFrom(e);
+        }
+
+        #endregion
     }
 }

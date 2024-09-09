@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -104,6 +105,21 @@ namespace StartClone
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private void OnCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            var pers_menu = new SettingsCommand("pers", "Personalization", handler => { });
+            var about_menu = new SettingsCommand("abt", "About", handler => new AboutFlyout().Show());
+
+            args.Request.ApplicationCommands.Add(pers_menu);
+            args.Request.ApplicationCommands.Add(about_menu);
+        }
+
+        protected override void OnWindowCreated(WindowCreatedEventArgs args)
+        {
+            SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
+            base.OnWindowCreated(args);
         }
     }
 }

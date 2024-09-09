@@ -10,35 +10,47 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace StartClone
 {
+
+    /// <summary>
+    /// Class representing Start screen tile.
+    /// </summary>
+    public sealed class Tile
+    {
+        public string command { get; set; }
+        public ImageSource image { get; set; }
+        public string name { get; set; }
+        public TileSize size { get; set; } = TileSize.Normal;
+    }
+
     public sealed class TilesGroup
     {
-        public string name;
-        public List<Tile> tiles;
+        public string name { get; set; }
+        public ObservableCollection<Tile> tiles { get; set; }
     }
 
     public sealed class TilesSource
     {
-        //public static TilesSource Instance { get; private set; }
+        public static TilesSource Instance { get; private set; }
 
-        public ObservableCollection<TilesGroup> Groups =
-            new ObservableCollection<TilesGroup>();
+        public ObservableCollection<TilesGroup> Groups
+        { get; set; } = new ObservableCollection<TilesGroup>();
 
         public TilesSource()
         {
-            //Instance = this;
+            Instance = this;
         }
 
         public async void addDefaultTiles()
         {
             Groups.Insert(0, new TilesGroup {
                 name = "Test",
-                tiles = new List<Tile>
+                tiles = new ObservableCollection<Tile>
                 {
                     new Tile()
                     {
                         command = "start[hide]",
                         name = "Desktop",
-                        image = new BitmapImage(new Uri(await Utils.getWallpaperPath())),
+                        image = new BitmapImage(new Uri(await Utils.getWallpaperPath(), UriKind.Absolute)),
                         //image = new BitmapImage(),
                         size = TileSize.Wide
                     },
@@ -51,17 +63,6 @@ namespace StartClone
                 }
             });
         }
-    }
-
-    /// <summary>
-    /// Class representing Start screen tile.
-    /// </summary>
-    public sealed class Tile
-    {
-        public string command;
-        public ImageSource image;
-        public string name;
-        public TileSize size = TileSize.Normal;
     }
 
     public enum TileSize
