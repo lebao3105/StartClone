@@ -28,7 +28,7 @@ namespace StartCloneComponents
         {
             //try
             //{
-            //    StorageFolder themesFolder = await GetFolderAsync("ms-appdata:///roaming/Microsoft\\Windows\\Themes");
+            //    StorageFolder themesFolder = await ApplicationData.Current.RoamingFolder.GetFolderAsync("../../../../Roaming/Microsoft/Windows/Themes/");
             //    var itemsList = await themesFolder.GetItemsAsync();
             //    foreach (var item in itemsList)
             //    {
@@ -50,7 +50,8 @@ namespace StartCloneComponents
             //{
             //    throw ex;
             //}
-            return "ms-appdata:///roaming/Microsoft/Windows/Themes/TranscodedWallpaper";
+            //return "ms-appdata:///roaming/Microsoft/Windows/Themes/TranscodedWallpaper";
+            return new Uri(ApplicationData.Current.RoamingFolder.Path + "/../../../../Roaming/Microsoft/Windows/Themes/TranscodedWallpaper").AbsolutePath;
         }
 
         public static BitmapImage GetUserImage()
@@ -58,6 +59,24 @@ namespace StartCloneComponents
             var sb = new StringBuilder(1000);
             GetUserTilePath(null, 0x80000000, sb, sb.Capacity);
             return new BitmapImage(new Uri(sb.ToString(), UriKind.Absolute));
+        }
+
+        public static IAsyncOperation<string> getUserName()
+        {
+            return getUserName_Impl().AsAsyncOperation();
+        }
+
+        private static async Task<string> getUserName_Impl()
+        {
+            try
+            {
+                var userFolder = ApplicationData.Current.RoamingFolder;
+                return new Uri(userFolder.Path + "/../../../../../").AbsolutePath.Replace("/", "").Replace("C:Users", "");
+            }
+            catch
+            {
+                return "";
+            }
         }
     }
 }

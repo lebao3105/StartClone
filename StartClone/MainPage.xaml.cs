@@ -13,7 +13,10 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Windows.System.UserProfile;
+using StartCloneComponents;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -46,6 +49,19 @@ namespace StartClone
             tiles.addDefaultTiles();
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
+            InitializeItems();
+        }
+
+        private async void InitializeItems()
+        {
+            /// TODO:
+            /// Windows.System.UserProfile is deprecated on Windows 10.
+            /// External API calls needed.
+            username.Text = await Utils.getUserName();
+            profilePicture.Fill = new ImageBrush()
+            {
+                ImageSource = Utils.GetUserImage()
+            };
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)

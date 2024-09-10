@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -31,14 +32,6 @@ namespace StartClone
         private TilesGroup targetGroup { get; set; }
 
         /// <summary>
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
-        public TilesGroup DefaultViewModel
-        {
-            get { return this.targetGroup; }
-        }
-
-        /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 
         /// process lifetime management
         /// </summary>
@@ -49,12 +42,12 @@ namespace StartClone
 
         public GroupDetails()
         {
-            this.InitializeComponent();
-
             // Setup the navigation helper
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
             this.navigationHelper.SaveState += navigationHelper_SaveState;
+
+            this.InitializeComponent();
 
             // Setup the logical page navigation components that allow
             // the page to only show one pane at a time.
@@ -65,6 +58,7 @@ namespace StartClone
             // to change from showing two panes to showing a single pane
             Window.Current.SizeChanged += Window_SizeChanged;
             this.InvalidateVisualState();
+
         }
 
         void itemListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -76,7 +70,7 @@ namespace StartClone
         }
 
         /// <summary>
-        /// Populates the page with content passed during navigation.  Any saved state is also
+        /// Populates the page with content passed during navigation. Any saved state is also
         /// provided when recreating a page from a prior session.
         /// </summary>
         /// <param name="sender">
@@ -100,7 +94,8 @@ namespace StartClone
                     this.itemsViewSource.View.MoveCurrentToFirst();
                 }
 
-                pageTitle.Text = targetGroup.name;
+                itemsViewSource.Source = (e.NavigationParameter as TilesGroup).tiles;
+                pageTitle.Text = (e.NavigationParameter as TilesGroup).name;
             }
             else
             {
@@ -245,7 +240,6 @@ namespace StartClone
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            targetGroup = e.Parameter as TilesGroup;
             navigationHelper.OnNavigatedTo(e);
         }
 

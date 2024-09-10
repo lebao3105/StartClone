@@ -12,7 +12,7 @@
 
     <Page.Resources>
         <!-- Collection of items displayed by this page -->
-        <CollectionViewSource x:Name="itemsViewSource" Source="{Binding}" ItemsPath="tiles"/>
+        <CollectionViewSource x:Name="itemsViewSource" Source="{Binding}"/>
     </Page.Resources>
 
     <!--
@@ -54,14 +54,12 @@
         <!-- Vertical scrolling item list -->
         <ListView
             x:Name="itemListView"
-            AutomationProperties.AutomationId="ItemsListView"
-            AutomationProperties.Name="Items"
             TabIndex="1"
             Grid.Row="1"
             Margin="-10,-10,0,0"
             Padding="120,0,0,60"
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
-            IsSwipeEnabled="False"
+            IsSwipeEnabled="True"
             SelectionChanged="ItemListView_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -71,7 +69,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="60" Height="60">
-                            <Image Source="{Binding image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                            <Image Source="{Binding image}" Stretch="UniformToFill"/>
                         </Border>
                         <StackPanel Grid.Column="1" Margin="10,0,0,0">
                             <TextBlock Text="{Binding name}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" MaxHeight="40"/>
@@ -114,10 +112,9 @@
                 <Image Grid.Row="1" Margin="0,0,20,0" Width="180" Height="180" Source="{Binding image}"
                        Stretch="UniformToFill" AutomationProperties.Name="{Binding name}"/>
                 <StackPanel x:Name="itemDetailTitlePanel" Grid.Row="1" Grid.Column="1">
-                    <TextBlock x:Name="itemTitle" Margin="0,-10,0,0" Text="{Binding name}" Style="{StaticResource SubheaderTextBlockStyle}"/>
-                    <TextBlock x:Name="itemSubtitle" Margin="0,0,0,20" Text="{Binding command}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    <TextBox x:Name="itemTitle" Margin="0,-10,0,0" Text="{Binding name}"/>
+                    <TextBox x:Name="itemSubtitle" Margin="0,0,0,20" Text="{Binding command}"/>
                 </StackPanel>
-                <!--<TextBlock Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Text="{Binding Content}" Style="{StaticResource BodyTextBlockStyle}"/>-->
             </Grid>
         </ScrollViewer>
 

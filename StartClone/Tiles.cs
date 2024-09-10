@@ -50,7 +50,7 @@ namespace StartClone
                     {
                         command = "start[hide]",
                         name = "Desktop",
-                        image = new BitmapImage(new Uri(await Utils.getWallpaperPath(), UriKind.Absolute)),
+                        image = new BitmapImage( new Uri(await Utils.getWallpaperPath(), UriKind.Absolute) ),
                         //image = new BitmapImage(),
                         size = TileSize.Wide
                     },

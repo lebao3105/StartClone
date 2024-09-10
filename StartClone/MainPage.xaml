@@ -29,13 +29,16 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <GridView
             x:Name="appsGrid"
             Grid.RowSpan="2" Padding="116, 137, 40, 46"
             SelectionMode="Multiple" IsSwipeEnabled="True"
             IsItemClickEnabled="True" ItemClick="GridView_ItemClick"
-            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}">
+            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+            AllowDrop="True"
+            CanDragItems="True"
+            CanReorderItems="True">
 
             <GridView.ItemTemplate>
                 <DataTemplate>
@@ -43,13 +46,15 @@
                         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
                             <Image Source="{Binding image}" Stretch="UniformToFill"/>
                         </Border>
-                        <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
-                            <TextBlock Text="{Binding name}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
+                        
+                        <StackPanel VerticalAlignment="Bottom" Background="Transparent">
+                            <TextBlock Text="{Binding name}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}"
+                                       Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0" FontFamily="Global User Interface"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
-            
+
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid GroupPadding="0,0,70,0"/>
@@ -76,20 +81,27 @@
 
         </GridView>
 
-        <!-- Back button and page title -->
+        <!-- Buttons and page title -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <!--<Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
-                        VerticalAlignment="Top"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button"/>-->
             <TextBlock x:Name="pageTitle" Text="Start" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+
+            <Button x:Name="userButton" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,57,164,0" Grid.Column="1" Height="46"
+                    Style="{StaticResource TextBlockButtonStyle}">
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Ellipse x:Name="profilePicture" HorizontalAlignment="Right" Height="37" Margin="0,0,0,0" VerticalAlignment="Stretch" Width="37">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{Binding profileImg}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <TextBlock x:Name="fullname" Text="fullname" Margin="0,0,0,0" TextAlignment="Right" FontSize="20" FontFamily="Global User Interface"/>
+                    <TextBlock x:Name="username" Text="username" Margin="0,26,0,-26" TextAlignment="Right"/>
+                </Grid>
+            </Button>
         </Grid>
     </Grid>
     <Page.BottomAppBar>
