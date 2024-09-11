@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -30,15 +31,8 @@ namespace StartClone
 
     public sealed class TilesSource
     {
-        public static TilesSource Instance { get; private set; }
-
         public ObservableCollection<TilesGroup> Groups
-        { get; set; } = new ObservableCollection<TilesGroup>();
-
-        public TilesSource()
-        {
-            Instance = this;
-        }
+        { get; set; }
 
         public async void addDefaultTiles()
         {
@@ -51,7 +45,6 @@ namespace StartClone
                         command = "start[hide]",
                         name = "Desktop",
                         image = new BitmapImage( new Uri(await Utils.getWallpaperPath(), UriKind.Absolute) ),
-                        //image = new BitmapImage(),
                         size = TileSize.Wide
                     },
                     new Tile()
@@ -62,6 +55,37 @@ namespace StartClone
                     }
                 }
             });
+        }
+
+        public void SaveData()
+        {
+            try
+            {
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                localSettings.Values["Groups"] = Groups.ToArray();
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void LoadData()
+        {
+            try
+            {
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                Groups = localSettings.Values["Groups"] as ObservableCollection<TilesGroup>;
+                if (Groups == null)
+                {
+                    Groups = new ObservableCollection<TilesGroup>();
+                    addDefaultTiles();
+                }
+            }
+            catch
+            {
+                addDefaultTiles();
+            }
         }
     }
 

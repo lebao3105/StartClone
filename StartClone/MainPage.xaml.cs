@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.System.UserProfile;
 using StartCloneComponents;
+using System.Collections.Specialized;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -46,7 +47,7 @@ namespace StartClone
 
         public MainPage()
         {
-            tiles.addDefaultTiles();
+            tiles.LoadData();
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             InitializeItems();
@@ -70,7 +71,7 @@ namespace StartClone
             switch (itemCommand)
             {
                 case "start[hide]":
-                    this.Opacity = 0.0;
+                    this.Visibility = Visibility.Collapsed;
                     break;
 
                 case "":
@@ -93,6 +94,10 @@ namespace StartClone
             this.Frame.Navigate(typeof(GroupDetails), (group as TilesGroup));
         }
 
+        private void groupedItemsViewSource_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+
+        }
         #region NavigationHelper registration
 
         /// The methods provided in this section are simply used to allow

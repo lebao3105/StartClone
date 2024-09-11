@@ -71,7 +71,7 @@ namespace StartCloneComponents
             try
             {
                 var userFolder = ApplicationData.Current.RoamingFolder;
-                return new Uri(userFolder.Path + "/../../../../../").AbsolutePath.Replace("/", "").Replace("C:Users", "");
+                return new Uri(ApplicationData.Current.RoamingFolder.Path + "/../../../../../").AbsolutePath.Replace("/", "").Replace("C:Users", "");
             }
             catch
             {
